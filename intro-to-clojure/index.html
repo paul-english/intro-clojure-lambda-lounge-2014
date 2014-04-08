@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to Clojure</title>
+    <link href="css/reset.css" rel="stylesheet" />
+    <meta name="author" content="Paul English">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" href="css/favicon.png" />
+    <link rel="apple-touch-icon" href="css/apple-touch-icon.png" />
+    <!-- Code Prettifier: -->
+<link href="css/highlight.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,900" rel="stylesheet" />
+
+  </head>
+
+  <body>
+  <div class="fallback-message">
+  <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+  <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+  </div>
+    <div id="impress">
+    <div class='step' >
+    
+<h1>Intro to Clojure*</h1>
+
+<h2>Getting started, foundational ideas, and the core library</h2>
+</div>
+      <div class='step' >
+    
+<h1>Topics to Cover</h1>
+
+<p><br></p>
+
+<ol>
+<li>Clojure Semantics</li>
+<li>Prefix Notation</li>
+<li>The Positioning of Parenthesis</li>
+<li>The Elimination of Parenthesis</li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h1>Topics to Cover</h1>
+
+<p><br></p>
+
+<ol>
+<li>Clojure Semantics</li>
+<li><del>Prefix Notation</del></li>
+<li><del>The Positioning of Parenthesis</del></li>
+<li><del>The Elimination of Parenthesis</del></li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h1>So... What&#39;s cool about Clojure?</h1>
+
+<p><br></p>
+
+<ul>
+<li>It&#39;s a <em>Lisp</em></li>
+<li>It&#39;s very <em>Functional</em></li>
+<li>It Embraces <em>Concurrency</em></li>
+<li>It&#39;s Built to run on <em>Java</em> and more recently <em>Javascript</em></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>How does it compare to Lisp?</h1>
+
+<p><br></p>
+
+<ul>
+<li>It&#39;s a Lisp-1</li>
+<li>The focus is on sequences, not necessarily lists</li>
+<li>There&#39;s some more syntax sugar, which actually leads to fewer
+parenthesis</li>
+<li>There&#39;s a whole list of comparisons here <a href="http://clojure.org/lisps">http://clojure.org/lisps</a>,
+so we won&#39;t go into detail about those.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>How does it compare to Lisp?</h1>
+
+<p><br></p>
+
+<h2>A note on some of the similarities</h2>
+
+<ul>
+<li>Functions are first class objects</li>
+<li>Sequences really are lists and they include <code class='inline prettyprint'>lists</code>, <code class='inline prettyprint'>vectors</code>,
+<code class='inline prettyprint'>maps</code>, <code class='inline prettyprint'>arrays</code>, and many of the objects you work with in Clojure
+are <code class='inline prettyprint'>seq</code>&#39;able</li>
+<li>We get macros!</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>What does Clojure do for concurrency?</h1>
+
+<p><br></p>
+
+<ul>
+<li>Clojure offers a handful of primitives built-in for handling
+different concurrent situations.</li>
+<li>Java concurrency is a tough problem. Clojure solves this.</li>
+<li>Javascript doesn&#39;t really have concurrency, though it does have
+asynchronicity. This is getting better, but in general some of
+Clojure&#39;s concurrency ideas help make asynchronicity in JS much
+easier.</li>
+<li>These primitives include <code class='inline prettyprint'>atoms</code>, <code class='inline prettyprint'>refs</code>, <code class='inline prettyprint'>agents</code>, <code class='inline prettyprint'>promises</code>, and
+the <code class='inline prettyprint'>core.async</code> library.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Clojure and Clojurescript</h1>
+
+<p><br></p>
+
+<ul>
+<li>Clojure is built to run on the JVM and compiles to Java bytecode.</li>
+<li>Clojurescript compiles to pure Javascript.
+-- You can use Clojurescript
+on it&#39;s own for a full Javascript app (frontends, Light table)
+-- You can use Clojurescript in combination with a Clojure backend
+and share quite a bit of code.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Cool, let&#39;s get on to the basics</h1>
+
+<p><br></p>
+
+<ol>
+<li>forms</li>
+<li>reader macros</li>
+<li>functions</li>
+<li>vars &amp; binding</li>
+<li>flow</li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h1>Forms</h1>
+
+<ol>
+<li>Symbols</li>
+<li>Literals</li>
+<li>Lists, Vectors, Maps, Sets</li>
+<li>Special forms</li>
+</ol>
+
+<p><br></p>
+
+<h2>Further Reading</h2>
+
+<ul>
+<li><a href="http://clojure.org/reader">http://clojure.org/reader</a></li>
+<li><a href="http://clojure.org/special_forms">http://clojure.org/special_forms</a></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Reader Macros</h1>
+
+<p><br></p>
+
+<ul>
+<li>Reader macros give us a bunch of syntactic sugar</li>
+<li>They&#39;re completely optional, though they tend to improve the
+conciseness and readability of code</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Reader Macros</h1>
+
+<p><br></p>
+
+<!-- Not including table shorthand in markdown was a huge mistake -->
+
+<style>
+table {
+font-size: 0.5em;
+}
+table th {
+text-align: left;
+font-weight: bold;
+padding-right: 55px;
+}
+table td, th {
+padding: 2px;
+}
+</style>
+
+<table>
+<tr>
+<th> <b>Anonymous Function</b> </th>
+<td> <code>#(str "Hello " %)</code> </td>
+</tr>
+<tr>
+<th> <b>Comment</b> </th>
+<td> <code>; inline comment</code> </td>
+</tr>
+<tr>
+<th> <b>Deref</b> </th>
+<td> <code>@form => (deref form)</code> </td>
+</tr>
+<tr>
+<th> <b>Meta</b> </th>
+<td> <code>^form => (meta form)</code> </td>
+</tr>
+<tr>
+<th> <b>Metadata</b> </th>
+<td> <code>#^metadata-form</code> </td>
+</tr>
+<tr>
+<th> <b>Quote</b> </th>
+<td> <code>'form => (quote form)</code> </td>
+</tr>
+<tr>
+<th> <b>Regex pattern</b> </th>
+<td> <code>#"foo" => java.util.regex.Pattern</code> </td>
+</tr>
+<tr>
+<th> <b>Syntax-quote</b> </th>
+<td> <code>`x</code> </td>
+<!-- ` prevent my editor syntax highlighting -->
+<!-- from being annoying -->
+</tr>
+<tr>
+<th> <b>Unquote</b> </th>
+<td> <code>~</code> </td>
+</tr>
+<tr>
+<th> <b>Unquote-splicing</b> </th>
+<td> <code>~@</code> </td>
+</tr>
+<tr>
+<th> <b>Var-quote</b> </th>
+<td> <code>#'x => (var x)</code> </td>
+</tr>
+</table>
+</div>
+      <div class='step' >
+    
+<h1>Functions</h1>
+
+<p><br></p>
+
+<p>Functions are first class objects, and come in various forms</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(fn [name] (str "Hello " name))
+
+#(str "Hello " %)
+
+(defn greeter [name] (str "Hello " name))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Functions</h1>
+
+<p>They can be passed around &amp; made use of in other higher-order functions.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; Use built-in functions with each other
+(map inc [1 2 3 4])
+=> [2 3 4 5]
+
+;; Make use of anonymous functions within higher order functions
+(map #(rem (* % 2) 10) [20 34 95 19])
+=> [0 8 0 8]
+
+;; Compose, complement, and more
+(comp not nil?)
+(complement nil?)
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Functions</h1>
+
+<p><br></p>
+
+<p>But you guys already know about functional programming. This is
+probably a given for the Lambda Lounge.</p>
+
+<p><br></p>
+
+<p>;)</p>
+</div>
+      <div class='step' >
+    
+<h1>Vars, Binding, &amp; Namespaces</h1>
+
+<p><br></p>
+
+<h2>Vars</h2>
+
+<p>Vars are immutable (mostly) and local to a namespace.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def a-var 42)
+=> #'user/a-var
+
+a-var
+=> 42
+
+(var a-var)
+=> #'user/a-var
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Vars, Binding, &amp; Namespaces</h1>
+
+<p><br></p>
+
+<h2>Binding</h2>
+
+<p>We can make user of local binding using <code class='inline prettyprint'>let</code></p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(let [a-var 42
+     another "foo"]
+  another)
+=> "foo"
+
+another
+=> java.lang.RuntimeException: Unable to resolve symbol: another in this context
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Vars, Binding, &amp; Namespaces</h1>
+
+<p><br></p>
+
+<h2>Destructured Binding</h2>
+
+<p>Anywhere binding occurs we can make use of destructuring.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; Destructuring a vector that's passed in as an argument to a function
+(defn a-cool-fn [[first last]] ...)
+
+;; Destructuring a map
+(def coll {:a 1 :b 2 :c 3})
+(let [{a :a b :b} coll] (println a b))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Vars, Binding, &amp; Namespaces</h1>
+
+<p><br></p>
+
+<h2>Namespaces</h2>
+
+<p>Namespaces allow us to organize code, and prevent globally scoped
+variables. Filenames and directory structure must match up correctly
+to a namespace, otherwise there will be errors. For example the
+following namespace would likely be found in <code class='inline prettyprint'>src/my_namespace/core.clj</code></p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(ns my-namespace.core
+  (require ...)
+  (use ...)
+  (import ...))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Flow Control</h1>
+
+<p><br></p>
+
+<p>Control flow in Clojure is similar to most lisps though there may be
+some differences.</p>
+
+<ul>
+<li>We can branch with <code class='inline prettyprint'>if</code> and it&#39;s variants.</li>
+<li>We try to avoid iterative steps (these imply side-effects) though if
+needed we can using <code class='inline prettyprint'>do</code>. (By convention any function with <code class='inline prettyprint'>do</code> in the
+name implies side-effects, e.g. <code class='inline prettyprint'>dosync</code>, <code class='inline prettyprint'>doall</code>, <code class='inline prettyprint'>dorun</code>, ...)</li>
+<li>Looping isn&#39;t the same as you might expect, rather the function <code class='inline prettyprint'>for</code> is a list comprehension.</li>
+<li>Recursion, though we&#39;ll talk about this in later section.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Flow Control</h1>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; If-Else Structure
+(if predicate-fn
+  (left-branch-fn ...)
+  (right-branch-fn ...))
+
+;; Example
+(if (>= item 5)
+  item
+  (recur (inc item)))
+=> item
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Flow Control</h1>
+
+<p><br></p>
+
+<p>When we want more than one thing to happen.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(if true
+  (do
+   (step-1 ...)
+   (step-2 ...)))
+
+;; The when macro encapsulates this one-armed if pattern
+(when true
+  (step-1 ...)
+  (step-2 ...))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Flow Control</h1>
+
+<p><br></p>
+
+<p><code class='inline prettyprint'>for</code> is a list comprehension, and can be very powerful. The
+assumption is that you make use of the result, rather than have
+side-effects within the looping structure. In the case you have
+side-effecty code <code class='inline prettyprint'>doseq</code> can work well for this.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(for [x [0 1 2 3 4 5]
+      :let [y (* x 3)]
+      :when (even? y)]
+   y)
+=> [0 6 12]
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Sequences</h1>
+
+<p><br></p>
+
+<p>As expressed earlier, A core concept of Clojure is the sequence. This
+abstraction let&#39;s us make heavy reuse of the most important sequence
+functions on a variety of data structures like <code class='inline prettyprint'>vectors</code>, <code class='inline prettyprint'>lists</code>,
+<code class='inline prettyprint'>maps</code>, and even more abstract things like files, database results, or
+custom defined objects.</p>
+
+<p><br></p>
+
+<p>In Clojure just about everything is a <code class='inline prettyprint'>seq</code>.</p>
+</div>
+      <div class='step' >
+    
+<h1>Sequences</h1>
+
+<p><br></p>
+
+<h2>Things which are Seq&#39;able</h2>
+
+<ul>
+<li>Clojure collections</li>
+<li>Java collections / Javascript collections</li>
+<li>Java arrays &amp; strings</li>
+<li>Regular expression matches</li>
+<li>Directory structures</li>
+<li>IO Streams, XML, Database Results, Your own custom objects...</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Sequences</h1>
+
+<p><br></p>
+
+<h2>Sequence Operations</h2>
+
+<ul>
+<li><em>Basics</em>: <code class='inline prettyprint'>first</code>, <code class='inline prettyprint'>rest</code>, <code class='inline prettyprint'>next</code></li>
+<li><em>Constructing</em>: <code class='inline prettyprint'>cons</code>, <code class='inline prettyprint'>conj</code>, <code class='inline prettyprint'>into</code></li>
+<li><em>Access</em>: <code class='inline prettyprint'>take</code>, <code class='inline prettyprint'>drop</code>, <code class='inline prettyprint'>nth</code></li>
+<li><em>Creating</em>: <code class='inline prettyprint'>range</code>, <code class='inline prettyprint'>repeat</code>, <code class='inline prettyprint'>iterate</code>, <code class='inline prettyprint'>cycle</code>, <code class='inline prettyprint'>interleave</code>, <code class='inline prettyprint'>interpose</code></li>
+<li><em>Creation of Specific Types</em>: <code class='inline prettyprint'>seq</code>, <code class='inline prettyprint'>list</code>, <code class='inline prettyprint'>vector</code>, <code class='inline prettyprint'>hash-set</code>, <code class='inline prettyprint'>hash-map</code></li>
+<li><em>Filtering</em>: <code class='inline prettyprint'>filter</code>, <code class='inline prettyprint'>take-while</code>, <code class='inline prettyprint'>drop-while</code></li>
+<li><em>Predicates</em>: <code class='inline prettyprint'>every?</code>, <code class='inline prettyprint'>some</code>, <code class='inline prettyprint'>not-every?</code>, <code class='inline prettyprint'>not-any?</code></li>
+<li><em>Map &amp; Reduce</em>: <code class='inline prettyprint'>map</code>, <code class='inline prettyprint'>map-indexed</code>, <code class='inline prettyprint'>reduce</code>,</li>
+<li><em>Forced Evaluation</em>: <code class='inline prettyprint'>doall</code>, <code class='inline prettyprint'>dorun</code></li>
+<li>The list goes on...</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Sequences</h1>
+
+<p><br></p>
+
+<p>We also have sequence operations specific to certain types.</p>
+
+<h2>Vectors</h2>
+
+<ul>
+<li><code class='inline prettyprint'>peek</code>, <code class='inline prettyprint'>pop</code>, <code class='inline prettyprint'>get</code>, <code class='inline prettyprint'>assoc</code>, <code class='inline prettyprint'>subvec</code></li>
+</ul>
+
+<h2>Maps</h2>
+
+<ul>
+<li><code class='inline prettyprint'>keys</code>, <code class='inline prettyprint'>vals</code>, <code class='inline prettyprint'>get</code></li>
+<li><code class='inline prettyprint'>contains?</code>, <code class='inline prettyprint'>assoc</code>, <code class='inline prettyprint'>dissoc</code>, <code class='inline prettyprint'>select-keys</code>, <code class='inline prettyprint'>merge</code>, <code class='inline prettyprint'>merge-with</code></li>
+</ul>
+
+<h2>Sets</h2>
+
+<ul>
+<li><code class='inline prettyprint'>union</code>, <code class='inline prettyprint'>difference</code>, <code class='inline prettyprint'>intersection</code>, <code class='inline prettyprint'>select</code></li>
+<li><code class='inline prettyprint'>rename</code>, <code class='inline prettyprint'>project</code>, <code class='inline prettyprint'>join</code></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Sequences</h1>
+
+<p>Using sequence operations on a custom object.</p>
+<pre><code class='prettyprint '>(defrecord Person [fname lname address])
+
+(def me (Person. "Paul" "English" "1234 Street"))
+
+(first me) => [:fname "Paul"]
+(last me) => [:address "1234 Street"]
+
+(map identity me)
+=> ([:fname "Paul"] [:lname "English"] [:address "1234 Street"])
+</code></pre>
+<p><em>Note</em>: A record is close to the concept of an object. Interfaces can
+ be defined on records that let a variety of functions perform on
+ them. Records by default implement interfaces for working as a
+ sequence.</p>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<ol>
+<li>Atoms (Uncoordinated, Synchronous)</li>
+<li>Refs (Coordinated, Synchronous)</li>
+<li>Agents (Uncoodinated, Asynchronous)</li>
+<li>Promises</li>
+<li>Futures</li>
+<li>core.async</li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Atoms</h2>
+
+<p>Atoms are uncoordinated synchronous objects. Like their name implies
+they&#39;re atomic.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def counter (atom 0))
+
+counter => #<Atom@6ea406d6: 0>
+
+@counter => 0
+(deref counter) => 0
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Atoms</h2>
+
+<p>We use atoms when we want to have some kind of shared state that
+changes atomically. They&#39;re lightweight and tend to be more common
+than some of the other concurrency primitives.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(swap! inc counter) => 1
+(swap! inc counter) => 2
+
+(reset! counter 0) => 0
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Refs</h2>
+
+<p>Similar to atoms, but bring in the concept of coordination. We use
+transactions to work with them. Therefore anytime you have changes
+that need to be done in one atomic transaction, you can use refs.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; Let's try using a ref as a counter
+(def counter (ref 0))
+
+;; Similar method of access `deref`
+@counter => 0
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Refs</h2>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; `ref-set` is like `reset!` but....
+(ref-set counter 1)
+=> java.lang.IllegalStateException: No transaction running
+
+;; We _must_ have a transaction
+(dosync
+  (ref-set counter 1))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Refs</h2>
+
+<p>Just like we can update atoms using <code class='inline prettyprint'>swap!</code>, for refs we use <code class='inline prettyprint'>alter</code>
+and <code class='inline prettyprint'>commute</code>. Of course these must happen in a transaction.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(dosync (alter counter inc))
+(dosync (commute counter inc))
+</code></pre>
+<p><br></p>
+
+<p>Note: <code class='inline prettyprint'>commute</code> is the same as <code class='inline prettyprint'>alter</code> only, like the name suggests,
+it&#39;s for when you don&#39;t care about what order the operations may occur
+in, i.e. the operations are <em>commutative</em>.</p>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Refs</h2>
+
+<p>Because <code class='inline prettyprint'>dosync</code> creates a transaction, when you perform multiple ref
+operations either everything will succeed, or none of it will.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>@counter => 1
+
+(dosync
+  (alter counter inc)
+  (throw (ex-info "Simulated Error" {})))
+
+;; It's still the same value
+@counter => 1
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Refs</h2>
+
+<p>Refs can optionally be validated.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def current-user (ref {:name "Paul"}
+                       :validator #(contains? % :name)))
+
+(dosync
+  (ref-set current-user {}))
+=> java.lang.IllegalStateException: Invalid reference state
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Agents</h2>
+
+<p>Agents are asynchronous &amp; uncoordinated. Agent operations occur in a
+seperate thread than the one you&#39;re on.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def counter (agent 0))
+
+(defn long-running-inc [a]
+  (Thread/sleep 5000)
+  (inc a))
+
+(send counter long-running-inc)
+</code></pre>
+<p><br></p>
+
+<p><em>Note</em>: Just like a <code class='inline prettyprint'>ref</code> we can optionally attach validator functions.</p>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Agents</h2>
+
+<p>Because operations happen in a different thread errors are handled differently</p>
+
+<p><br></p>
+
+<ul>
+<li>We use <code class='inline prettyprint'>agent-errors</code> to view if anything went wrong.</li>
+<li>We use <code class='inline prettyprint'>clear-agent-errors</code> to clear these problems.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Promises</h2>
+
+<p><br></p>
+
+<p>A <code class='inline prettyprint'>promise</code> is an object you can pass around between threads or
+functions. It&#39;s an agreement to perform an operation in some other
+thread, that can block at some point until it&#39;s needed. In this ways
+it&#39;s somewhat like an agent, though we can wait till it&#39;s realized.</p>
+</div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Promises</h2>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def p (promise))
+
+;; Threading a native Java Thread (-> is sugar)
+(-> (fn []
+      (Thread/sleep 5000)
+      (deliver p "Long operation finished"))
+    (Thread.)
+    (.start))
+
+;; Try derefing the value before the timer finishes
+@p
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Futures</h2>
+
+<p>A future is very similar to a promise (and sometimes easily confused).
+The difference is we define the operation on it right away rather than
+assuming some other piece of code will <code class='inline prettyprint'>deliver</code> to it.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def f (future (Thread/sleep 5000) "done"))
+
+@f
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Concurrency</h1>
+
+<h2>Core Async Library</h2>
+
+<p>The <code class='inline prettyprint'>core.async</code> library is an additional dependency, and not by
+default included in a new project. It&#39;s a really great library, and I
+think Ben will be covering it more in depth. Some of it&#39;s benefits,</p>
+
+<ul>
+<li>Communicate amongst threads with queue-like channels.</li>
+<li>Avoid callbacks.</li>
+<li>Write <code class='inline prettyprint'>golang</code> style concurrent code.</li>
+<li>Clojurescript let&#39;s you make use of channels as a better way of
+managing complex asynchronicity in a Javascript app.</li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Macros</h1>
+
+<p><br></p>
+
+<p>Macros are a way to dynamically write or expand code at runtime. It&#39;s
+a very popular lisp concept, and covered in great depth in many
+places. Here are the basic ideas,</p>
+
+<p><br></p>
+
+<ol>
+<li>Macros let you perform magic!</li>
+<li>Macros can get unweildy and complex!</li>
+<li>Don&#39;t abuse macros!</li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h1>Macros</h1>
+
+<p><br></p>
+
+<p>There are lots of core components of clojure that are built using
+macros. We can dive a bit into how those work with <code class='inline prettyprint'>macroexpand</code> and <code class='inline prettyprint'>macroexpand-1</code>.</p>
+</div>
+      <div class='step' >
+    
+<h1>Macros</h1>
+
+<p><br></p>
+<pre><code class='prettyprint '>;; When is a macro for the one-armed-if, notice it expands to an
+;; if statement
+(macroexpand '(when (>= 2 1) (println "Basic logic seems to hold")))
+=> (if (>= 2 1) (do (println "Basic logic seems to hold")))
+
+;; Threading is syntactic sugar that helps you avoid parens and
+;; deeply nested calls. This threads through the end.
+(macroexpand-1 '(->> (rand)
+                     (+ (rand))
+                     inc
+                     (Math/exp)))
+=> (clojure.core/->> (clojure.core/->> (rand) (+ (rand))) inc (Math/exp))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Macros</h1>
+
+<p>We write macros using special reader syntax to control what forms get evaluated.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(defmacro unless [pred a b]
+  `(if (not ~pred) ~a ~b))
+
+(unless true 1 2) => 2
+
+;; But you don't always need fancy syntax
+(defmacro postfix-notation [expression]
+  (conj (butlast expression) (last expression)))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Multimethods</h1>
+
+<p>Multimethods allow us to dispatch differently based on what we&#39;re
+calling on.</p>
+
+<p><br></p>
+
+<p>One example might be polymorphic style dispatching on an account.</p>
+
+<p><br></p>
+<pre><code class='prettyprint '>(defmulti service-charge (fn [acct] [(account-level acct)
+                                     (:tag acct)]))
+(defmethod service-charge [::acc/Basic ::acc/Checking]   [_] 25)
+(defmethod service-charge [::acc/Basic ::acc/Savings]    [_] 10)
+(defmethod service-charge [::acc/Premium ::acc/Account] [_] 0)
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Multimethods</h1>
+
+<p><br></p>
+<pre><code class='prettyprint '>(defmulti greeting (fn[x] (x "language")))
+
+;params is not used, so we could have used [_]
+(defmethod greeting "English" [params] "Hello!")
+
+(defmethod greeting "French" [params] "Bonjour!")
+
+;;default handling
+(defmethod greeting :default [params]
+ (throw (IllegalArgumentException.
+          (str "I don't know the " (params "language") " language"))))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Multimethods</h1>
+
+<p><br></p>
+<pre><code class='prettyprint '>(def english-map {"id" "1", "language" "English"})
+(def  french-map {"id" "2", "language" "French"})
+(def spanish-map {"id" "3", "language" "Spanish"})
+
+(greeting english-map)
+=> "Hello!"
+(greeting french-map)
+=> "Bounjour!"
+(greeting spanish-map)
+=> java.lang.IllegalArgumentException: I don't know the Spanish language
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+
+<p>Because Clojure is built on the JVM, there are some issues with
+recursion. There is no tail call optimization, and it can be easy to
+blow the stack with self-recursion. Clojure provides <code class='inline prettyprint'>loop</code> and
+<code class='inline prettyprint'>recur</code> as a way to get around this.</p>
+<pre><code class='prettyprint '>;; We can still use self-recursion, but it's not too great
+(defn fib [n]
+  (condp = n
+    0 0
+    1 1
+    (+ (fib (- n 1))
+       (fib (- n 2)))))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+<pre><code class='prettyprint '>;; Recur is a natural self-recursion, but...
+(defn fib [n]
+  (condp = n
+    0 0
+    1 1
+    (+ (recur (- n 1))
+       (recur (- n 2)))))
+
+=> java.lang.UnsupportedOperationException: Can only recur from tail position
+;; ... it's a bit limited
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+
+<p><code class='inline prettyprint'>recur</code> is good for simple recursive cases, as it can only be called
+once and from the tail position.</p>
+<pre><code class='prettyprint '>(defn factorial
+  ([n] (factorial n 1))
+  ([cnt acc] (if (zero? cnt)
+               acc
+               (recur (dec cnt) (* acc cnt)))))
+
+(factorial 10)
+=> 3628800
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+
+<p><code class='inline prettyprint'>loop</code> is provided to augment recur. Here&#39;s factorial rewritten to
+avoid explicit self-recursion.</p>
+<pre><code class='prettyprint '>(defn factorial [n]
+  (loop [cnt n acc 1]
+    (if (zero? cnt)
+      acc
+      (recur (dec cnt) (* acc cnt)))))
+
+(factorial 10)
+=> 3628800
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+
+<p>Recursion is immensely  useful; however, there are usually ways around
+it. If we look back to the fibbonaci example we can use sequences to
+avoid recursion all together.</p>
+
+<p>Here&#39;s the Fibbonaci sequence again, this time it&#39;s not a function
+that generates each number. It&#39;s a function that generates an infinite
+lazy sequence.</p>
+<pre><code class='prettyprint '>(def fib-seq
+  ((fn rfib [a b]
+     (lazy-seq (cons a (rfib b (+ a b)))))
+   0 1))
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Recursion</h1>
+
+<p>Now we&#39;ve modified it further to avoid recursion altogether,</p>
+<pre><code class='prettyprint '>(def fib-seq
+  ((fn []
+     (letfn [(fib-step [[a b]] [b (+ a b)])]
+       (map first (iterate fib-step [0 1]))))))
+
+(take 10 fib-seq)
+=> (0 1 1 2 3 5 8 13 21 34)
+</code></pre></div>
+      <div class='step' >
+    
+<h1>Getting Started</h1>
+
+<ul>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html">Install the JVM</a></li>
+<li><p><a href="http://leiningen.org">Install Leiningen</a></p>
+<pre><code class='prettyprint '>cd ~/bin
+wget https://raw.github.com/technomancy/leiningen/stable/bin/lein
+chmod +ax lein
+lein # this will run a self-install
+</code></pre></li>
+<li><p>Try out the lein commands
+    new, repl, run, deps, ...</p></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>Getting Started</h1>
+
+<ul>
+<li>Useful Plugins
+
+<ul>
+<li><a href="https://github.com/weavejester/codox">codox</a></li>
+<li><a href="https://github.com/xsc/lein-ancient">ancient</a></li>
+<li><a href="https://github.com/emezeske/lein-cljsbuild">cljsbuild</a></li>
+<li><a href="https://github.com/lshift/cloverage">cloverage</a></li>
+<li><a href="https://github.com/jonase/kibit">kibit</a></li>
+<li><a href="https://github.com/marick/lein-midje">midje</a></li>
+</ul></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h1>REPL</h1>
+
+<h2>Documentation</h2>
+<pre><code class='prettyprint '>(doc name)
+(find-doc str)
+</code></pre>
+<h2>Past args</h2>
+<pre><code class='prettyprint '>*1, *2, *3
+</code></pre>
+<h2>Errors</h2>
+<pre><code class='prettyprint '>*e
+</code></pre></div>
+      <div class='step' >
+    
+<h1>The End</h1>
+
+<h2>Thank You!</h2>
+
+<p>You can probably find this presentation at,</p>
+
+<p><a href="http://log0ymxm.github.io/intro-clojure-lambda-lounge-2014">http://log0ymxm.github.io/intro-clojure-lambda-lounge-2014</a></p>
+
+<p><br></p>
+
+<ul>
+<li>Paul English <a href="mailto:paul@redbrainlabs.com">paul@redbrainlabs.com</a></li>
+<li><a href="http://twitter.com/log0ymxm">http://twitter.com/log0ymxm</a></li>
+<li><a href="http://github.com/log0ymxm">http://github.com/log0ymxm</a></li>
+</ul>
+
+      </div>
+    <script src="js/impress.js"></script>
+    <script>impress().init();</script>
+  </body>
+</html>
+    
